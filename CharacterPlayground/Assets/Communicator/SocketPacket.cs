@@ -53,11 +53,14 @@ namespace Communicator {
             public void UpdateFinger(FingerModel finger) {
                 int idx = 0;
                 foreach (Transform bone in finger.bones) {
-                    if (bone == null) {
-                        continue;
-                    }
+                    try {
+                        if (bone == null) {
+                            continue;
+                        }
 
-                    bones[idx++].UpdateBone(bone);
+                        bones[idx++].UpdateBone(bone);
+                    }
+                    catch (Exception e) { }
                 }
             }
         }
