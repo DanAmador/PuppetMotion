@@ -3,6 +3,10 @@ from bpy.app.handlers import persistent
 from bpy.props import BoolProperty, EnumProperty, IntProperty, PointerProperty, StringProperty
 from bpy.types import AddonPreferences
 
+import communicator
+
+from .webserver_operators import Stop, Start
+
 class WebSocketServerSettings(AddonPreferences):
     bl_idname = __package__
     
@@ -42,10 +46,11 @@ class WebSocketServerSettings(AddonPreferences):
         
         col.prop(self, "auto_start")
         
-        #if wserver:
-        #    col.operator(Stop.bl_idname, icon='QUIT', text="Stop server")
-        #else:
-        #    col.operator(Start.bl_idname, icon='QUIT', text="Start server")
+        if communicator.wserver:
+            print("global wserver")
+            col.operator(Stop.bl_idname, icon='QUIT', text="Stop server")
+        else:
+            col.operator(Start.bl_idname, icon='QUIT', text="Start server")
             
         col = split.column()
         col.label(text="Data to send:", icon='RECOVER_LAST')

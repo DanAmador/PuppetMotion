@@ -1,4 +1,5 @@
 from bpy.types import Operator
+import communicator
 
 
 class Start(Operator):
@@ -7,10 +8,10 @@ class Start(Operator):
     bl_label = "Start WebSocket server"
     
     def execute(self, context):
-        #addon_prefs = context.user_preferences.addons[__name__].preferences
-        #if not start_server(str(addon_prefs.host), int(addon_prefs.port)):
-        #    self.report({"ERROR"}, "The server is already started.")
-        #    return {"CANCELLED"}
+        addon_prefs = context.user_preferences.addons[__name__].preferences
+        if not communicator.start_server(str(addon_prefs.host), int(addon_prefs.port)):
+            self.report({"ERROR"}, "The server is already started.")
+            return {"CANCELLED"}
         return {"FINISHED"}
 
 class Stop(Operator):
@@ -19,8 +20,8 @@ class Stop(Operator):
     bl_label = "Stop WebSocket server"
     
     def execute(self, context):
-        #if not stop_server():
-        #   self.report({"ERROR"}, "The server is not started.")
-        #  return {"CANCELLED"}
+        if not communicator.stop_server():
+           self.report({"ERROR"}, "The server is not started.")
+          return {"CANCELLED"}
         return {"FINISHED"}
     

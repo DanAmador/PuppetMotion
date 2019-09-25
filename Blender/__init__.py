@@ -26,11 +26,6 @@ bl_info = {
 
 import bpy
 
-from .settings import *
-from .webserver_operators import *
-wserver = None
-
-classes = (WebSocketServerSettings, Start, Stop)
 
 
 import bpy
@@ -38,24 +33,30 @@ from bpy.app.handlers import persistent
 from bpy.props import BoolProperty, EnumProperty, IntProperty, PointerProperty, StringProperty
 from bpy.types import AddonPreferences
 
+from .settings import *
+from .webserver_operators import *
+import communicator
+
+
+classes = (WebSocketServerSettings, Start, Stop)
+
 def register():
     from bpy.utils import register_class
     for c in classes:
         register_class(c)
     
-    #bpy.utils.register_module(__name__)
     
-    #addon_prefs = bpy.context.user_preferences.addons["leapSettings"].preferences
-    #if bool(addon_prefs.auto_start):
-    #    print("hi")
-        #start_server(str(addon_prefs.host), int(addon_prefs.port))
+    addon_prefs = bpy.context.user_preferences.addons["leapSettings"].preferences
+    if bool(addon_prefs.auto_start):
+        print("hi")
+        communicator.start_server(str(addon_prefs.host), int(addon_prefs.port))
 
 def unregister():
+    communicator.stop_server()
+
     from bpy.utils import unregister_class
     for c in reversed(classes):
         unregister_class(c)
-    #stop_server()
-    #bpy.utils.unregister_module(__name__)
     
 
 
