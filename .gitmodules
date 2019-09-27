@@ -1,0 +1,3 @@
+[submodule "Blender/python-socketio"]
+	path = Blender/python-socketio
+	url = https://github.com/miguelgrinberg/python-socketio
