@@ -13,7 +13,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 bl_info = {
-    "name" : "Leap Motion",
+    "name" : "Leap Motion Integration",
     "author" : "Dan Amador",
     "description": "Communicate with an external Unity process and share Leap Motion hand data",
     "blender" : (2, 80, 0),
@@ -22,6 +22,24 @@ bl_info = {
     "warning" : "",
     "category" : "Animation"
 }
+
+def install_pip():
+    """Bootstrap pip and any dependencies into Blender's Python configuration"""
+    try:
+        import pip
+        print(pip.__version__)
+    except ImportError:
+        print("pip python package not found. Installing.")
+        try:
+            import ensurepip
+            ensurepip.bootstrap(upgrade=True, default_pip=True)
+        except ImportError:
+            print("pip cannot be configured or installed. ")
+    finally:
+        packages = ("python-socketio", "aiohttp[speedups]")
+
+        for package in packages:
+            pip._internal.main(["install", package])
 
 
 import bpy
@@ -33,31 +51,34 @@ from bpy.app.handlers import persistent
 from bpy.props import BoolProperty, EnumProperty, IntProperty, PointerProperty, StringProperty
 from bpy.types import AddonPreferences
 
-from .settings import *
+
+# install_pip()
+from . import communicator
+
+from .addon_settings import *
 from .webserver_operators import *
-import communicator
 
 
-classes = (WebSocketServerSettings, Start, Stop)
+classes = (WebSocketServerSettings, Start)
 
 def register():
     from bpy.utils import register_class
     for c in classes:
         register_class(c)
     
-    
-    addon_prefs = bpy.context.user_preferences.addons["leapSettings"].preferences
-    if bool(addon_prefs.auto_start):
-        print("hi")
-        communicator.start_server(str(addon_prefs.host), int(addon_prefs.port))
+    bpy.app.handlers.frame_change_post.append(communicator.handle_messages)
 
+    pref = context.preferences.addons[__package__].preferences
+    if pref.auto_start:
+        communicator.search_and_start(pref.host, pref.port)
+    # communicator.start_server()
+    
 def unregister():
-    communicator.stop_server()
+    # communicator.stop_server()
 
     from bpy.utils import unregister_class
     for c in reversed(classes):
         unregister_class(c)
-    
 
 
 if __name__ == "__main__":
