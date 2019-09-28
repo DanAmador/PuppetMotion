@@ -47,9 +47,7 @@ class SettingsPanel(AddonPreferences):
             col.label(text="Running at port: {}".format(communicator.server_port))
         
         if not communicator.wserver:
-            col.operator(Start.bl_idname, icon='QUIT', text="Start server")
+            col.operator(ForceStart.bl_idname, icon='QUIT', text="Start server")
 
 
         col = split.column()
-
-
