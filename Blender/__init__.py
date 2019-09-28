@@ -13,7 +13,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 bl_info = {
-    "name" : "Leap Motion Integration",
+    "name" : "LeapMotionBlender",
     "author" : "Dan Amador",
     "description": "Communicate with an external Unity process and share Leap Motion hand data",
     "blender" : (2, 80, 0),
@@ -23,43 +23,17 @@ bl_info = {
     "category" : "Animation"
 }
 
-def install_pip():
-    """Bootstrap pip and any dependencies into Blender's Python configuration"""
-    try:
-        import pip
-        print(pip.__version__)
-    except ImportError:
-        print("pip python package not found. Installing.")
-        try:
-            import ensurepip
-            ensurepip.bootstrap(upgrade=True, default_pip=True)
-        except ImportError:
-            print("pip cannot be configured or installed. ")
-    finally:
-        packages = ("python-socketio", "aiohttp[speedups]")
-
-        for package in packages:
-            pip._internal.main(["install", package])
-
-
-import bpy
-
-
-
 import bpy
 from bpy.app.handlers import persistent
 from bpy.props import BoolProperty, EnumProperty, IntProperty, PointerProperty, StringProperty
 from bpy.types import AddonPreferences
 
 
-# install_pip()
 from . import communicator
+from .Operators import Start
+from . import SettingsPanel
 
-from .addon_settings import *
-from .webserver_operators import *
-
-
-classes = (WebSocketServerSettings, Start)
+classes = (SettingsPanel, Start)
 
 def register():
     from bpy.utils import register_class
@@ -68,14 +42,11 @@ def register():
     
     bpy.app.handlers.frame_change_post.append(communicator.handle_messages)
 
-    pref = context.preferences.addons[__package__].preferences
-    if pref.auto_start:
-        communicator.search_and_start(pref.host, pref.port)
-    # communicator.start_server()
+    # pref = bpy.context.preferences.addons[__package__].preferences
+    # if pref.auto_start:
+        # communicator.start_server(pref.host, pref.port)
     
 def unregister():
-    # communicator.stop_server()
-
     from bpy.utils import unregister_class
     for c in reversed(classes):
         unregister_class(c)
