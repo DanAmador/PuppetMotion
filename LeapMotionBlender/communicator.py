@@ -7,7 +7,7 @@ import socket
 
 from bpy.app.handlers import persistent
 from aiohttp.web import TCPSite
-from .socket_server import spawn_server
+from .socket_server import server_thread_starter
 
 wserver = None
 running  = False
@@ -21,7 +21,7 @@ def start_server(host, port):
         return (False, "The server is already running")
     if is_port_open(host,port):
         return (False, "The port is not open")
-    wserver = threading.Thread(target=server_thread_starter, args=(spawn_server(),host,port,))
+    wserver = threading.Thread(target=server_thread_starter, args=(host,port,))
     wserver.daemon = True
     wserver.start()
     global server_port 
@@ -29,14 +29,6 @@ def start_server(host, port):
     return (True, "Server started at port: {}".format(port))
 
 
-
-def server_thread_starter(runner, host, port):
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    loop.run_until_complete(runner.setup())
-    site = TCPSite(runner, host, port)
-    loop.run_until_complete(site.start())
-    loop.run_forever()
 
 
 def force_start(host, port):
