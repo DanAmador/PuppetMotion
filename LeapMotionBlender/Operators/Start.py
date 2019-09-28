@@ -8,10 +8,11 @@ class Start(Operator):
     bl_label = "Start WebSocket server"
     
     def execute(self, context):
-        addon_prefs = context.preferences.addons[__package__].preferences
+        #Hardcoding is the shit 
+        addon_prefs = context.preferences.addons["LeapMotionBlender"].preferences
         (started_server, reason) = communicator.start_server(str(addon_prefs.host), int(addon_prefs.port)) 
         if not started_server:
             self.report({"ERROR"}, reason)
             return {"CANCELLED"}
-        self.report(reason)
+        self.report({"INFO"}, reason)
         return {"FINISHED"}

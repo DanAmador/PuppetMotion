@@ -14,7 +14,7 @@ from aiohttp import web
 wserver = None
 running  = False
 message_queue = queue.Queue()
-
+server_port = 0
 
 def start_server(host, port):
     global running
@@ -26,7 +26,8 @@ def start_server(host, port):
     wserver = threading.Thread(target=run_server, args=(aiohttp_server(),host,port,))
     wserver.daemon = True
     wserver.start()
-
+    global server_port 
+    server_port = port
     return (True, "Server started at port: {}".format(port))
 
 
@@ -60,15 +61,20 @@ def aiohttp_server():
     runner = web.AppRunner(app)
     return runner
 
-def search_and_start(host, port):
-    offset = 0
+def force_start(host, port):
+    port = port if is_port_open(host,port) else get_open_port()
+    (did_start, reason) = start_server(host, port)
+    return (did_start, reason, port)
 
-    while(not is_port_open(port + offset)):
-        offset += 1
-    
-    start_server(host, port+offset)
+def get_open_port():
+        import socket
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.bind(("",0))
+        s.listen(1)
+        port = s.getsockname()[1]
+        s.close()
+        return port  
 
-    
 def is_port_open(ip,port):
    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
    try:

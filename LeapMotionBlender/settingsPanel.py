@@ -3,7 +3,7 @@ from bpy.app.handlers import persistent
 from bpy.props import BoolProperty, EnumProperty, IntProperty, PointerProperty, StringProperty
 from bpy.types import AddonPreferences
 
-from .Operators  import Start
+from .Operators import Start, ForceStart
 from . import communicator 
 
 class SettingsPanel(AddonPreferences):
@@ -32,7 +32,6 @@ class SettingsPanel(AddonPreferences):
 
         
     def draw(self, context):
-        print("nigga")
         layout = self.layout
         
         row = layout.row()
@@ -44,12 +43,13 @@ class SettingsPanel(AddonPreferences):
         col.separator()
         
         col.prop(self, "auto_start")
+        if communicator.server_port != 0:
+            col.label(text="Running at port: {}".format(communicator.server_port))
         
-        if communicator.wserver:
-            col.prop(self,"Server running")
-        else:
+        if not communicator.wserver:
             col.operator(Start.bl_idname, icon='QUIT', text="Start server")
-        
+
+
         col = split.column()
 
 
