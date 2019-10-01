@@ -1,13 +1,15 @@
 import socketio
 import asyncio 
 import websockets
+from websockets.exceptions import ConnectionClosedError
 from . import communicator
 
 async def websocket_server(websocket, path):
-    async for message in websocket:
-        print(message)
-        communicator.message_queue.put(message)
-
+    try:
+        async for message in websocket:
+            communicator.message_queue.put(message)
+    except ConnectionClosedError:
+        print("Disconnect")
 
 
 

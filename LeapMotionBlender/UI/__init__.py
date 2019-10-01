@@ -1,1 +1,1 @@
-from .settingsPanel import SettingsPanel
+from .animationPanel import AnimationPanel

@@ -32,9 +32,9 @@ def start_server(host, port):
 
 
 def force_start(host, port):
-    port = port if is_port_open(host,port) else get_open_port()
-    (did_start, reason) = start_server(host, port)
-    return (did_start, reason, port)
+    newport = port if is_port_open(host,port) else get_open_port()
+    (did_start, reason) = start_server(host, newport)
+    return (did_start, reason, newport)
 
 def get_open_port():
         import socket

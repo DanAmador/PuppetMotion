@@ -29,28 +29,28 @@ from bpy.types import AddonPreferences
 
 
 from . import communicator
-from .Operators import Start, ForceStart
+from .Operators import ForceStart
 from .settingsPanel import SettingsPanel
+from .UI import AnimationPanel
 
-classes = (SettingsPanel, Start, ForceStart)
+classes = (SettingsPanel, ForceStart, AnimationPanel)
 
 def register():
     from bpy.utils import register_class
     for c in classes:
         register_class(c)
     
-    bpy.app.handlers.frame_change_post.append(communicator.handle_messages)
+    bpy.app.handlers.frame_change_pre.append(communicator.handle_messages)
 
     pref = bpy.context.preferences.addons[__package__].preferences
     
     if pref.auto_start:
-        communicator.start_server(pref.host, pref.port)
+        communicator.force_start(pref.host, pref.port)
     
 def unregister():
     from bpy.utils import unregister_class
     for c in reversed(classes):
         unregister_class(c)
-
 
 if __name__ == "__main__":
     register()

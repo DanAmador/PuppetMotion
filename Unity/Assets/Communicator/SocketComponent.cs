@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using System;
 using UnityEngine;
 using WebSocketSharp;
 
@@ -16,6 +14,10 @@ namespace Communicator {
             _webSocket.Connect();
             _webSocket.OnMessage += (sender, e) => InterpretMessage(e.Data);
         }
+        
+        private void OnDestroy() {
+            _webSocket.Close();
+        }
 
         private void InterpretMessage(string data) {
             Debug.Log(data);
@@ -25,7 +27,6 @@ namespace Communicator {
             _webSocket.Send(data);
         }
 
-        void Update() { }
 
     }
 }

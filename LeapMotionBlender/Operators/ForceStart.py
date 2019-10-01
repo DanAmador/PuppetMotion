@@ -8,6 +8,7 @@ class ForceStart(Operator):
     bl_label = "Force start server"
     
     def execute(self, context):
+        #Hardcoding is the shit 
         addon_prefs = context.preferences.addons["LeapMotionBlender"].preferences
         (did_start, reason, port) = communicator.force_start(str(addon_prefs.host), int(addon_prefs.port)) 
         if not did_start:

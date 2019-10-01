@@ -3,7 +3,7 @@ from bpy.app.handlers import persistent
 from bpy.props import BoolProperty, EnumProperty, IntProperty, PointerProperty, StringProperty
 from bpy.types import AddonPreferences
 
-from .Operators import Start, ForceStart
+from .Operators import ForceStart
 from . import communicator 
 
 class SettingsPanel(AddonPreferences):
