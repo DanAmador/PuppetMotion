@@ -26,19 +26,19 @@ import bpy
 from bpy.app.handlers import persistent
 from bpy.props import BoolProperty, EnumProperty, IntProperty, PointerProperty, StringProperty
 from bpy.types import AddonPreferences
-
+from .general_helpers import register_with_extras, unregister_with_extras
 
 from . import communicator
 from .Operators import ForceStart
 from .settingsPanel import SettingsPanel
 from .UI import AnimationPanel
 
+
 classes = (SettingsPanel, ForceStart, AnimationPanel)
 
 def register():
-    from bpy.utils import register_class
-    for c in classes:
-        register_class(c)
+
+    register_with_extras(classes)
     
     bpy.app.handlers.frame_change_pre.append(communicator.handle_messages)
 
@@ -46,11 +46,10 @@ def register():
     
     if pref.auto_start:
         communicator.force_start(pref.host, pref.port)
+
     
 def unregister():
-    from bpy.utils import unregister_class
-    for c in reversed(classes):
-        unregister_class(c)
+    unregister_with_extras(classes)
 
 if __name__ == "__main__":
     register()

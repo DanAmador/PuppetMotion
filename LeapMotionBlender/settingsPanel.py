@@ -41,7 +41,7 @@ class SettingsPanel(AddonPreferences):
         col.prop(self, "host")
         col.prop(self, "port")
         col.separator()
-        
+        col.prop(self, "bone_group_enum")
         col.prop(self, "auto_start")
         if communicator.server_port != 0:
             col.label(text="Running at port: {}".format(communicator.server_port))
