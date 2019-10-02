@@ -3,41 +3,39 @@ from bpy.props import EnumProperty
 from bpy.types import PropertyGroup, Panel
 from ..general_helpers import RegisterMixin
 
-def bone_item_callback(scene, context):
-
-    items = [
-        ('LOC', "Location", ""),
-        ('ROT', "Rotation", ""),
-        ('SCL', "Scale", ""),
-    ]
-
-    ob = context.object
-    if ob is not None:
-        if ob.type == 'LAMP':
-            items.append(('NRG', "Energy", ""))
-            items.append(('COL', "Color", ""))
-
-    return items
-
-
 class BoneSelectProperty(RegisterMixin, PropertyGroup):
-    _ptrProp = True
-    mode_options = [
-        ("mesh.primitive_plane_add", "Plane", '', 'MESH_PLANE', 0),
-        ("mesh.primitive_cube_add", "Cube", '', 'MESH_CUBE', 1),
-        ("mesh.primitive_circle_add", "Circle", '', 'MESH_CIRCLE', 2),
-        ("mesh.primitive_uv_sphere_add", "UV Sphere", '', 'MESH_UVSPHERE', 3),
-        ("mesh.primitive_ico_sphere_add", "Ico Sphere", '', 'MESH_ICOSPHERE', 4),
-        ("mesh.primitive_cylinder_add", "Cylinder", '', 'MESH_CYLINDER', 5),
-        ("mesh.primitive_cone_add", "Cone", '', 'MESH_CONE', 6),
-        ("mesh.primitive_torus_add", "Torus", '', 'MESH_TORUS', 7)
-    ]
+    def get_armature_callbacks(scene, context):
+        armatures = context.scene.objects
+        items = []
+        for idx, obj in enumerate(armatures):
+            if obj.type == "ARMATURE":
+                items.append((obj.name, obj.name, '', "BONE_DATA", idx))
+        
+        return items
+    
+    def bone_item_callback(scene, context):
+        items = []
+        arm = bpy.context.scene.BoneSelectProperty.armature_select_enum
+        if arm:        
+            bgs = bpy.data.objects[arm].pose.bone_groups
+            for idx, bg in enumerate(bgs):
+                items.append((bg.name, bg.name, '', "BONE_DATA", idx))
+
+        return items
+
+    armature_select_enum : EnumProperty(
+        name="Armature",
+        items= get_armature_callbacks,
+        description="Select Armature"
+    )
+
     bone_group_enum : EnumProperty(
-        name="Choose Bone Group",
-        items=mode_options,
-        description="Choose bone group"
+        name="Bone Group",
+        items=bone_item_callback,
+        description="Select Bone Group"
     )
     
+
 
 
 class AnimationPanel(RegisterMixin, Panel ):
@@ -54,15 +52,25 @@ class AnimationPanel(RegisterMixin, Panel ):
         return context.object is not None
 
     def draw(self, context):
-        layout = self.layout 
-
-
-        col = layout.column()
-        for obj in bpy.data.objects:
-            layout.label(text=obj.name)
-        
+        layout = self.layout
         bone_select = bpy.context.scene.BoneSelectProperty
-        col.prop(bone_select, "bone_group_enum")
+
+
+        
+        layout.prop(bone_select, "armature_select_enum")        
+        if bone_select.armature_select_enum:
+            layout.prop(bone_select, "bone_group_enum")
+
+        if bone_select.bone_group_enum:
+            col = layout.column()
+            pose = bpy.data.objects[bone_select.armature_select_enum].pose
+            for pose_bone in pose.bones:
+                try:
+                    if bone_select.bone_group_enum == pose_bone.bone_group.name: 
+                        row = col.row()
+                        row.label(text=pose_bone.name)
+                except AttributeError:
+                    continue
         # for armature in obj:
         #     layout.label(text=obj.name)
 

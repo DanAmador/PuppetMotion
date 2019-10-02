@@ -34,7 +34,7 @@ class RegisterMixin:
     @classmethod
     def _unregister_extra(cls):
         if(issubclass(cls, PropertyGroup)):
-            obj = getattr(Scene, cls)
+            obj = getattr(Scene, cls.__name__)
             del obj
 
         classes = getattr(cls, "_classes")
