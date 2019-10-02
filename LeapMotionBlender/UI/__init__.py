@@ -1,1 +1,1 @@
-from .animationPanel import AnimationPanel
+from .bone_select_PT import BoneSelectPanel
