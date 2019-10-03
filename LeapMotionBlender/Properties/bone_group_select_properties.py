@@ -2,7 +2,7 @@ import bpy
 from bpy.props import EnumProperty
 from bpy.types import PropertyGroup
 from ..general_helpers import RegisterMixin
-from .leap_to_bone_PROP import get_or_create
+from .leap_to_bone_mapper_properties import get_or_create
 
 class BoneSelectProperty(RegisterMixin, PropertyGroup):
     def get_available_armatures(scene, context):

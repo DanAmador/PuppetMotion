@@ -1,7 +1,6 @@
 import bpy
 from bpy.types import Panel
-from ..bone_select_PROP import BoneSelectProperty
-from ..leap_to_bone_PROP import Leap2BoneProperty
+from ...Properties import Leap2BoneProperty, BoneSelectProperty
 from .leap_panel_base import LeapPanel
 
 

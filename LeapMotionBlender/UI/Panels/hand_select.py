@@ -1,8 +1,7 @@
 import bpy
 from bpy.types import Panel
-from ..bone_select_PROP import BoneSelectProperty
-from ..leap_to_bone_PROP import Leap2BoneProperty
 from .leap_panel_base import LeapPanel
+from ...Properties import BoneSelectProperty, Leap2BoneProperty
 
 
 class HandSelect(LeapPanel):
