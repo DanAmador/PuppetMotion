@@ -7,16 +7,24 @@ from bpy.types import PropertyGroup, Scene
 from ..general_helpers import RegisterMixin
 
 
-def get_or_create(armature, bone_group, bone_name):
-    name = f"{armature}:{bone_group}:{bone_name}"
-    leap2bone = bpy.context.scene.Leap2BoneProperty    
-    col = leap2bone.get(name)
-    if not col:
-        col = leap2bone.add()
-        col.name = name
-    return col
+
 
 class Leap2BoneProperty(RegisterMixin, PropertyGroup):
+    
+    @staticmethod
+    def get_bones_in_group(armature, bone_group):
+        bone_select = bpy.context.scene.BoneSelectProperty
+
+        bones = bpy.context.scene.objects[bone_select.armature_select_enum].pose.bones
+
+        for bone in bones:
+            try:
+                if bone.bone_group.name != bone_group:
+                    continue
+                yield bone
+            except AttributeError:
+                continue
+
     
     name :  StringProperty(
         name="Internal Name",
