@@ -6,22 +6,23 @@ from bpy.props import CollectionProperty
 from bpy.types import PropertyGroup, Scene
 from ..general_helpers import RegisterMixin
 
+
+def get_or_create(armature, bone_group, bone_name):
+    name = f"{armature}:{bone_group}:{bone_name}"
+    leap2bone = bpy.context.scene.Leap2BoneProperty    
+    col = leap2bone.get(name)
+    if not col:
+        col = leap2bone.add()
+        col.name = name
+    return col
+
 class Leap2BoneProperty(RegisterMixin, PropertyGroup):
-    total = -1    
     
-    @staticmethod
-    def add_property(cls):
-        global total
-        total +=1
-        return total
-
-
-    @classmethod
-    def remove_property(cls):
-        global total
-        total -=1
-        return total
-
+    name :  StringProperty(
+        name="Internal Name",
+        description= " Property id made out of armature:bone_group:bone_name",
+        # options='HIDDEN'
+    )
     handedness : EnumProperty(
         name="Hand",
         description="Which hand should it map to?",

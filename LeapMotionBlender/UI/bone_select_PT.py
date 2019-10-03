@@ -6,7 +6,7 @@ from .leap_to_bone_PROP import Leap2BoneProperty
 
 class BoneSelectPanel(RegisterMixin, Panel):
     bl_idname = "OBJECT_PT_bone_select"
-    bl_label = "Leap"
+    bl_label = "Hand Select"
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
     bl_category = "Leap"
@@ -26,10 +26,11 @@ class BoneSelectPanel(RegisterMixin, Panel):
             layout.prop(bone_select, "bone_group_enum")
 
         if bone_select.bone_group_enum:
+            leap2bone = bpy.context.scene.Leap2BoneProperty        
             col = layout.column()
             pose = context.scene.objects[bone_select.armature_select_enum].pose
             for col_prop in bpy.context.scene.Leap2BoneProperty:
                 row = col.row()
                 
-                row.label(text=col_prop.name)
+                row.label(text=col_prop.name.split(":")[-1])
                 row.prop(col_prop, "handedness")

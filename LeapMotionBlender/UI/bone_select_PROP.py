@@ -2,10 +2,9 @@ import bpy
 from bpy.props import EnumProperty
 from bpy.types import PropertyGroup
 from ..general_helpers import RegisterMixin
+from .leap_to_bone_PROP import get_or_create
 
 class BoneSelectProperty(RegisterMixin, PropertyGroup):
-
-    
     def get_available_armatures(scene, context):
         armatures = context.scene.objects
         items = []
@@ -26,19 +25,20 @@ class BoneSelectProperty(RegisterMixin, PropertyGroup):
         return items
     
     def create_leap2bone_props(self, context):
-        arm = bpy.context.scene.BoneSelectProperty.armature_select_enum
+        arm = context.scene.BoneSelectProperty.armature_select_enum
         pose = bpy.context.scene.objects[arm].pose
         
+        bone_group = context.scene.BoneSelectProperty.bone_group_enum
+        leap2bone = bpy.context.scene.Leap2BoneProperty        
+        
+        #TODO DELETE THIS ONLY FOR DEBUG
+        leap2bone.clear()
         for pose_bone in pose.bones:
             try:
-                print(context.scene.BoneSelectProperty.bone_group_enum)
-                print(pose_bone.bone_group.name)
-                print("")
-                if context.scene.BoneSelectProperty.bone_group_enum == pose_bone.bone_group.name:
-                    leap2bone = context.scene.Leap2BoneProperty.add()
-                    leap2bone.name = pose_bone.name
+                if bone_group == pose_bone.bone_group.name:
+                    leap2bone = get_or_create(arm, bone_group, pose_bone.name)                    
+                    # leap2bone.name = pose_bone.name
             except AttributeError as r:
-                print(r)
                 continue
 
     armature_select_enum : EnumProperty(
