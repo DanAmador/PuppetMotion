@@ -11,9 +11,14 @@ class HandSelect(LeapPanel):
 
     _classes = (BoneSelectProperty, Leap2BoneProperty)
 
-    def custom_draw(self, context):
+    def draw(self, context):
         layout = self.layout
         bone_select = bpy.context.scene.BoneSelectProperty
+        
+        layout.prop(bone_select, "armature_select_enum")        
+        
+        if bone_select.armature_select_enum:
+            layout.prop(bone_select, "bone_group_enum")
 
         if bone_select.bone_group_enum:
             leap2bone = bpy.context.scene.Leap2BoneProperty        

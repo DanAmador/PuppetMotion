@@ -1,1 +1,1 @@
-from .Panels import HandSelect
+from .Panels import HandSelect, TrackSettings

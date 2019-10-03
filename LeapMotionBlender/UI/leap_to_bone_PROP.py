@@ -1,7 +1,7 @@
 import bpy
 from bpy.props import (StringProperty, EnumProperty,
                         IntProperty, BoolVectorProperty, 
-                        FloatVectorProperty)
+                        FloatVectorProperty, BoolProperty)
 from bpy.props import CollectionProperty
 from bpy.types import PropertyGroup, Scene
 from ..general_helpers import RegisterMixin
@@ -22,6 +22,12 @@ class Leap2BoneProperty(RegisterMixin, PropertyGroup):
         name="Internal Name",
         description= " Property id made out of armature:bone_group:bone_name",
         # options='HIDDEN'
+    )
+
+    expanded : BoolProperty(
+        name= "Expanded",
+        description="Should the settings be viewable?",
+        default=True
     )
     handedness : EnumProperty(
         name="Hand",
@@ -48,8 +54,8 @@ class Leap2BoneProperty(RegisterMixin, PropertyGroup):
     )
     
     finger_joint : IntProperty(
-        name="Falange",
-        description="Choose the falange (joint) to track. From the palm outward",
+        name="Joint",
+        description="Choose the joint to track. From the palm outward",
         soft_max=2,
         soft_min=0
     )
@@ -63,8 +69,8 @@ class Leap2BoneProperty(RegisterMixin, PropertyGroup):
     scale_factor : FloatVectorProperty(
         name="Scale factor",
         description="Scale movement vector by thexe scalars",
-        min=0.01,
-        max=10,
+        soft_min=0.01,
+        soft_max=10,
         subtype="XYZ",
         size=3
     )

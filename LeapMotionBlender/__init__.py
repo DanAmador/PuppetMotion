@@ -31,10 +31,10 @@ from .general_helpers import register_with_extras, unregister_with_extras
 from . import communicator
 from .Operators import ForceStart
 from .settingsPanel import SettingsPanel
-from .UI import HandSelect
+from .UI import HandSelect, TrackSettings
 
 
-classes = (SettingsPanel, ForceStart, HandSelect)
+classes = (SettingsPanel, ForceStart, HandSelect, TrackSettings)
 
 def register():
 

@@ -13,21 +13,3 @@ class LeapPanel(RegisterMixin, Panel):
     @classmethod
     def poll(self,context):
         return context.object is not None
-
-    def draw(self, context):
-        layout = self.layout
-        bone_select = bpy.context.scene.BoneSelectProperty
-        
-        layout.prop(bone_select, "armature_select_enum")        
-        
-        if bone_select.armature_select_enum:
-            layout.prop(bone_select, "bone_group_enum")
-
-        try:
-            self.custom_draw(context)
-        except NotImplementedError:
-            pass
-
-    
-    def custom_draw(self,context):
-        raise NotImplementedError
