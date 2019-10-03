@@ -2,7 +2,7 @@ import bpy
 from bpy.props import (StringProperty, EnumProperty,
                         IntProperty, BoolVectorProperty, 
                         FloatVectorProperty, BoolProperty)
-from bpy.props import CollectionProperty
+from bpy.props import PointerProperty
 from bpy.types import PropertyGroup, Scene
 from ..general_helpers import RegisterMixin
 
@@ -29,6 +29,7 @@ class Leap2BoneProperty(RegisterMixin, PropertyGroup):
         description="Should the settings be viewable?",
         default=True
     )
+
     handedness : EnumProperty(
         name="Hand",
         description="Which hand should it map to?",
@@ -78,4 +79,5 @@ class Leap2BoneProperty(RegisterMixin, PropertyGroup):
 
     @classmethod
     def _register_extra(cls):
-        bpy.types.Scene.Leap2BoneProperty = CollectionProperty(type=cls)
+        bpy.types.PoseBone.LeapProperties = bpy.props.PointerProperty(type=cls)
+        # bpy.types.Scene.Leap2BoneProperty = CollectionProperty(type=cls)

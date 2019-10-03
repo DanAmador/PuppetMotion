@@ -25,9 +25,7 @@ class BoneSelectProperty(RegisterMixin, PropertyGroup):
         return items
     
     def create_leap2bone_props(self, context):
-        arm = context.scene.BoneSelectProperty.armature_select_enum
-        pose = bpy.context.scene.objects[arm].pose
-        
+
         bone_group = context.scene.BoneSelectProperty.bone_group_enum
         leap2bone = bpy.context.scene.Leap2BoneProperty        
         
@@ -50,6 +48,6 @@ class BoneSelectProperty(RegisterMixin, PropertyGroup):
     bone_group_enum : EnumProperty(
         name="Bone Group",
         items=get_bone_groups_in_armature,
-        update=create_leap2bone_props,
+        # update=create_leap2bone_props,
         description="Select Bone Group"
     )

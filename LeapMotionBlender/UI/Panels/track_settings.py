@@ -13,26 +13,34 @@ class TrackSettings(LeapPanel):
         bone_select = bpy.context.scene.BoneSelectProperty
 
         if bone_select.bone_group_enum:
-            leap2bone = bpy.context.scene.Leap2BoneProperty        
             col = layout.column()
             pose = context.scene.objects[bone_select.armature_select_enum].pose
             amount = 0 
-            for col_prop in leap2bone:
-                if col_prop.handedness == "None":
+            
+            bone_select = context.scene.BoneSelectProperty
+            arm = bone_select.armature_select_enum
+            pose = bpy.context.scene.objects[arm].pose
+            for pose_bone in pose.bones:
+                try:
+                    pb_leap_prop = pose_bone.LeapProperties
+                    if pb_leap_prop.handedness == "None" or pose_bone.bone_group.name != bone_select.bone_group_enum :
+                        continue
+                    amount +=1
+                    box = col.box()
+                    head = box.row()
+                    head.split(factor=0.1)
+                    head.prop(pb_leap_prop, "expanded", text="")
+                    icon = "TRIA_RIGHT" if pb_leap_prop.handedness == "Right" else "TRIA_LEFT"
+                    head.label(text=pose_bone.name, icon=icon)
+                    if pb_leap_prop.expanded:
+                        settings = box.box()
+                        settings.prop(pb_leap_prop, "finger_joint")
+                        bools = settings.row()
+                        bools.prop(pb_leap_prop, "rot_pos", index=0, text="Rotation")
+                        bools.prop(pb_leap_prop, "rot_pos", index=1, text="Position")
+                        settings.prop(pb_leap_prop, "scale_factor")
+                except AttributeError:
                     continue
-                amount +=1
-                box = col.box()
-                head = box.row()
-                head.split(factor=0.1)
-                head.prop(col_prop, "expanded", text="")
-                icon = "TRIA_RIGHT" if col_prop.handedness == "Right" else "TRIA_LEFT"
-                head.label(text=col_prop.name.split(":")[-1], icon=icon)
-                if col_prop.expanded:
-                    settings = box.box()
-                    settings.prop(col_prop, "finger_joint")
-                    bools = settings.row()
-                    bools.prop(col_prop, "rot_pos", index=0, text="Rotation")
-                    bools.prop(col_prop, "rot_pos", index=1, text="Position")
-                    settings.prop(col_prop, "scale_factor")
             if amount == 0:
                 layout.label(text="No bones have hand settings!")
+                

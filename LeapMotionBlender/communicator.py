@@ -4,6 +4,8 @@ import threading
 import asyncio
 
 import socket
+import json 
+
 
 from bpy.app.handlers import persistent
 from aiohttp.web import TCPSite
@@ -58,5 +60,12 @@ def is_port_open(ip,port):
 @persistent
 def handle_messages():
     while not message_queue.empty():
-        message = message_queue.get()
-        print(message)
+        try:
+            message = json.loads(message_queue.get())
+            print(message)
+            action = message.get("action")
+
+            # if action == "move":
+            #     continue    #TODO implement 
+        except JsonDecodeError:
+            continue
