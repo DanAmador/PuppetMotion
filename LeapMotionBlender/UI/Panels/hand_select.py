@@ -1,29 +1,19 @@
 import bpy
 from bpy.types import Panel
-from ..general_helpers import RegisterMixin
-from .bone_select_PROP import BoneSelectProperty
-from .leap_to_bone_PROP import Leap2BoneProperty
+from ..bone_select_PROP import BoneSelectProperty
+from ..leap_to_bone_PROP import Leap2BoneProperty
+from .leap_panel_base import LeapPanel
 
-class BoneSelectPanel(RegisterMixin, Panel):
-    bl_idname = "OBJECT_PT_bone_select"
+
+class HandSelect(LeapPanel):
+    bl_idname = "OBJECT_PT_hand_select"
     bl_label = "Hand Select"
-    bl_space_type = 'VIEW_3D'
-    bl_region_type = 'UI'
-    bl_category = "Leap"
 
     _classes = (BoneSelectProperty, Leap2BoneProperty)
 
-    @classmethod
-    def poll(self,context):
-        return context.object is not None
-
-    def draw(self, context):
+    def custom_draw(self, context):
         layout = self.layout
         bone_select = bpy.context.scene.BoneSelectProperty
-        layout.prop(bone_select, "armature_select_enum")        
-        
-        if bone_select.armature_select_enum:
-            layout.prop(bone_select, "bone_group_enum")
 
         if bone_select.bone_group_enum:
             leap2bone = bpy.context.scene.Leap2BoneProperty        
@@ -34,3 +24,4 @@ class BoneSelectPanel(RegisterMixin, Panel):
                 
                 row.label(text=col_prop.name.split(":")[-1])
                 row.prop(col_prop, "handedness")
+    

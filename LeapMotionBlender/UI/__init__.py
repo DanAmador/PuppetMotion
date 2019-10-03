@@ -1,1 +1,1 @@
-from .bone_select_PT import BoneSelectPanel
+from .Panels import HandSelect
