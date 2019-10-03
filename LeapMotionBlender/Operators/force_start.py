@@ -1,7 +1,6 @@
 from bpy.types import Operator
 from .. import communicator
 
-
 class ForceStart(Operator):
     """Force start with some open port"""
     bl_idname = "websocket_server.force_start"
