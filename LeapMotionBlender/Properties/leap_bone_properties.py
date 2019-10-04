@@ -73,10 +73,12 @@ class Leap2BoneProperty(RegisterMixin, PropertyGroup):
         size=2
 
     )
+
     scale_factor : FloatVectorProperty(
         name="Scale factor",
         description="Scale movement vector by these scalars",
         soft_min=0.01,
+        default=(1,1,1),
         soft_max=10,
         subtype="XYZ",
         size=3

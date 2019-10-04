@@ -29,6 +29,7 @@ class TrackSettings(LeapPanel):
             head.label(text=pose_bone.name, icon=icon)
             if pb_leap_prop.expanded:
                 settings = box.box()
+                settings.prop(pb_leap_prop, "finger_select")
                 settings.prop(pb_leap_prop, "finger_joint")
                 bools = settings.row()
                 bools.prop(pb_leap_prop, "rot_pos", index=0, text="Rotation")

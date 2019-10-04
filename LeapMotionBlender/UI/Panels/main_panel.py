@@ -2,6 +2,7 @@ import bpy
 from .leap_panel_base import LeapPanel
 from ...Properties import BoneSelectProperty, Leap2BoneProperty
 from ...Operators import RecordMovement
+from ... import communicator 
 
 class MainLeapPanel(LeapPanel):
     bl_label = "Leap Main"
@@ -17,6 +18,7 @@ class MainLeapPanel(LeapPanel):
             props =  context.scene.RecordProperties
             layout.prop(bone_select, "bone_group_enum")
             col = layout.column()
+            col.label(text="Running at port: {}".format(communicator.server_port))
             row = col.row()
             row.prop(props, "framerate")
             row.prop(props, "move_bones")

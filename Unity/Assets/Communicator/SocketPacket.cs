@@ -5,21 +5,21 @@ using UnityEngine;
 namespace Communicator {
     [Serializable]
     public class SocketPacket {
-        public Hand left, right;
+        public Hand Left, Right;
 
         public SocketPacket() {
-            left = new Hand();
-            right = new Hand();
+            Left = new Hand();
+            Right = new Hand();
         }
 
 
         public void UpdateHands(RigidHand leftRH, RigidHand rightRH) {
             if (leftRH.IsTracked) {
-                left.UpdateHand(leftRH.fingers);
+                Left.UpdateHand(leftRH.fingers);
             }
 
             if (rightRH.IsTracked) {
-                right.UpdateHand(rightRH.fingers);
+                Right.UpdateHand(rightRH.fingers);
             }
         }
 
@@ -32,12 +32,15 @@ namespace Communicator {
 
         [Serializable]
         public class Bone {
-            public Quaternion rotation;
-            public Vector3 position;
+            private Vector3 lastPos;
+            public Quaternion Rotation;
+            public Vector3 Position;
 
             public void UpdateBone(Transform bone) {
-                rotation = bone.rotation;
-                position = bone.position;
+                Vector3 middlePos = Position;
+                Rotation = bone.rotation ;
+                Position = bone.position - lastPos;
+                lastPos = middlePos;
             }
         }
 
@@ -68,24 +71,24 @@ namespace Communicator {
 
         [Serializable]
         public class Hand {
-            public Finger thumb, index, middle, pinky, ring;
+            public Finger Thumb, Index, Middle, Pinky, Ring;
 
             public Hand() {
-                thumb = new Finger();
-                index = new Finger();
-                middle = new Finger();
-                ring = new Finger();
-                pinky = new Finger();
+                Thumb = new Finger();
+                Index = new Finger();
+                Middle = new Finger();
+                Ring = new Finger();
+                Pinky = new Finger();
             }
 
 
             public void UpdateHand(FingerModel thumb, FingerModel index, FingerModel middle, FingerModel pinky,
                 FingerModel ring) {
-                this.thumb.UpdateFinger(thumb);
-                this.index.UpdateFinger(index);
-                this.middle.UpdateFinger(middle);
-                this.ring.UpdateFinger(ring);
-                this.pinky.UpdateFinger(pinky);
+                Thumb.UpdateFinger(thumb);
+                Index.UpdateFinger(index);
+                Middle.UpdateFinger(middle);
+                Ring.UpdateFinger(ring);
+                Pinky.UpdateFinger(pinky);
             }
 
 

@@ -15,7 +15,7 @@ class RecordProperties(RegisterMixin, PropertyGroup):
     def move_toggle(self, context):
         props = context.scene.RecordProperties
         if not bpy.app.timers.is_registered(move_bones) and props.move_bones:
-            bpy.app.timers.register(move_bones, first_interval=3, persistent=False)
+            bpy.app.timers.register(move_bones, first_interval=1, persistent=False)
 
         if not props.move_bones and bpy.app.timers.is_registered(move_bones):
             bpy.app.timers.unregister(move_bones)
@@ -24,7 +24,7 @@ class RecordProperties(RegisterMixin, PropertyGroup):
     move_bones : BoolProperty(
         name="Move Bones",
         description="Should the bones be moved with incoming data?",
-        default = True, 
+        default = False, 
         update = move_toggle
     )
 
