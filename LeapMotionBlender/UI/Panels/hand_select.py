@@ -15,17 +15,13 @@ class HandSelect(LeapPanel):
         bone_select = bpy.context.scene.BoneSelectProperty
         
 
-        if bone_select.bone_group_enum:
-            bone_generator = Leap2BoneProperty.get_bones_in_group(bone_select.armature_select_enum, bone_select.bone_group_enum)
-            col = layout.column()
-            for pose_bone in bone_generator:
-                try:
-                    pb_leap_prop = pose_bone.LeapProperties
-                    if pose_bone.bone_group.name != bone_select.bone_group_enum:
-                        continue
-                    row = col.row()
+        bone_generator = Leap2BoneProperty.get_bones_in_selected_group()
+        col = layout.column()
+        for pose_bone in bone_generator:
+            pb_leap_prop = pose_bone.LeapProperties
+            if pose_bone.bone_group.name != bone_select.bone_group_enum:
+                continue
+            row = col.row()
 
-                    row.label(text=pose_bone.name)
-                    row.prop(pb_leap_prop, "handedness")
-                except AttributeError:
-                    continue
+            row.label(text=pose_bone.name)
+            row.prop(pb_leap_prop, "handedness")

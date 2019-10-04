@@ -6,24 +6,22 @@ from bpy.props import PointerProperty
 from bpy.types import PropertyGroup, Scene
 from ..general_helpers import RegisterMixin
 
-
-
-
 class Leap2BoneProperty(RegisterMixin, PropertyGroup):
-    
     @staticmethod
-    def get_bones_in_group(armature, bone_group):
+    def get_bones_in_selected_group():
+
         bone_select = bpy.context.scene.BoneSelectProperty
 
         bones = bpy.context.scene.objects[bone_select.armature_select_enum].pose.bones
 
-        for bone in bones:
-            try:
-                if bone.bone_group.name != bone_group:
+        if bone_select.bone_group_enum:
+            for bone in bones:
+                try:
+                    if bone.bone_group.name != bone_select.bone_group_enum:
+                        continue
+                    yield bone
+                except AttributeError:
                     continue
-                yield bone
-            except AttributeError:
-                continue
 
     
     name :  StringProperty(
@@ -77,7 +75,7 @@ class Leap2BoneProperty(RegisterMixin, PropertyGroup):
     )
     scale_factor : FloatVectorProperty(
         name="Scale factor",
-        description="Scale movement vector by thexe scalars",
+        description="Scale movement vector by these scalars",
         soft_min=0.01,
         soft_max=10,
         subtype="XYZ",
