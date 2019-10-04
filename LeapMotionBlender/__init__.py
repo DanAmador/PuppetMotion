@@ -30,14 +30,13 @@ from .general_helpers import register_with_extras, unregister_with_extras
 
 from . import communicator
 from .Operators import ForceStart
-from .settingsPanel import SettingsPanel
-from .UI import HandSelect, TrackSettings
+from .UI import HandSelect, TrackSettings, SettingsPanel, MainLeapPanel
 
 
-classes = (SettingsPanel, ForceStart, HandSelect, TrackSettings)
+classes = (SettingsPanel, ForceStart, MainLeapPanel, HandSelect, TrackSettings)
 
 def register():
-
+    print(__package__)
     register_with_extras(classes)
     
     bpy.app.handlers.frame_change_pre.append(communicator.handle_messages)

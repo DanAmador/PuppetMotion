@@ -1,1 +1,2 @@
-from .Panels import HandSelect, TrackSettings
+from .Panels import HandSelect, TrackSettings, MainLeapPanel
+from .Menus import SettingsPanel

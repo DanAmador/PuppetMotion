@@ -14,10 +14,6 @@ class HandSelect(LeapPanel):
         layout = self.layout
         bone_select = bpy.context.scene.BoneSelectProperty
         
-        layout.prop(bone_select, "armature_select_enum")        
-        
-        if bone_select.armature_select_enum:
-            layout.prop(bone_select, "bone_group_enum")
 
         if bone_select.bone_group_enum:
             bone_generator = Leap2BoneProperty.get_bones_in_group(bone_select.armature_select_enum, bone_select.bone_group_enum)
