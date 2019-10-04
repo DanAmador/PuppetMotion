@@ -29,17 +29,18 @@ from bpy.types import AddonPreferences
 from .general_helpers import register_with_extras, unregister_with_extras
 
 from . import communicator
-from .Operators import ForceStart
+from .Operators import ForceStart, RecordMovement
 from .UI import HandSelect, TrackSettings, SettingsPanel, MainLeapPanel
 
 
-classes = (SettingsPanel, ForceStart, MainLeapPanel, HandSelect, TrackSettings)
+classes = (SettingsPanel, ForceStart,
+            MainLeapPanel, HandSelect,
+            TrackSettings, RecordMovement)
 
 def register():
-    print(__package__)
     register_with_extras(classes)
     
-    bpy.app.handlers.frame_change_pre.append(communicator.handle_messages)
+    # bpy.app.handlers.frame_change_pre.append(communicator.handle_messages)
 
     pref = bpy.context.preferences.addons[__package__].preferences
     

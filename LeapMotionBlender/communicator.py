@@ -62,7 +62,7 @@ def handle_messages():
     while not message_queue.empty():
         try:
             message = json.loads(message_queue.get())
-            print(message)
+            print(message_queue.get())
             action = message.get("action")
 
             # if action == "move":
