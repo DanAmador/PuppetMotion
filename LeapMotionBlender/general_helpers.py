@@ -8,7 +8,7 @@ def register_with_extras(classes):
         try:
             c._register_extra()
         except AttributeError:
-            print(f"{c.__name__} doesn't register any classes")
+            print(f"{c.__name__} is a leaf class")
             continue
 
 def unregister_with_extras(classes):

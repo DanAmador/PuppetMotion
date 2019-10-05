@@ -29,18 +29,17 @@ from bpy.types import AddonPreferences
 from .general_helpers import register_with_extras, unregister_with_extras
 
 from . import communicator
-from .Operators import ForceStart
-from .settingsPanel import SettingsPanel
-from .UI import HandSelect, TrackSettings
+from .Operators import ForceStart, RecordMovement
+from .UI import HandSelect, TrackSettings, SettingsPanel, MainLeapPanel
+from .bone_mover import move_bones
 
-
-classes = (SettingsPanel, ForceStart, HandSelect, TrackSettings)
+classes = (SettingsPanel, ForceStart,
+            MainLeapPanel, HandSelect,
+            TrackSettings, RecordMovement)
 
 def register():
-
     register_with_extras(classes)
     
-    bpy.app.handlers.frame_change_pre.append(communicator.handle_messages)
 
     pref = bpy.context.preferences.addons[__package__].preferences
     
@@ -50,6 +49,9 @@ def register():
     
 def unregister():
     unregister_with_extras(classes)
+    if  bpy.app.timers.is_registered(move_bones):
+        bpy.app.timers.unregister(move_bones)
+
 
 if __name__ == "__main__":
     register()

@@ -12,4 +12,4 @@ class LeapPanel(RegisterMixin, Panel):
 
     @classmethod
     def poll(self,context):
-        return context.object is not None
+        return context.object is not None and bpy.context.mode == "POSE"

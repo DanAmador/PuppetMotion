@@ -1,22 +1,25 @@
 import bpy
-from bpy.props import (StringProperty, EnumProperty,
+from bpy.props import (StringProperty, EnumProperty, PointerProperty,
                         IntProperty, BoolVectorProperty, 
                         FloatVectorProperty, BoolProperty)
-from bpy.props import CollectionProperty
 from bpy.types import PropertyGroup, Scene
 from ..general_helpers import RegisterMixin
 
-
-def get_or_create(armature, bone_group, bone_name):
-    name = f"{armature}:{bone_group}:{bone_name}"
-    leap2bone = bpy.context.scene.Leap2BoneProperty    
-    col = leap2bone.get(name)
-    if not col:
-        col = leap2bone.add()
-        col.name = name
-    return col
-
 class Leap2BoneProperty(RegisterMixin, PropertyGroup):
+    @staticmethod
+    def get_bones_in_selected_group():
+        bone_select = bpy.context.scene.BoneSelectProperty
+        bones = bpy.context.scene.objects[bone_select.armature_select_enum].pose.bones
+
+        if bone_select.bone_group_enum:
+            for bone in bones:
+                try:
+                    if bone.bone_group.name != bone_select.bone_group_enum:
+                        continue
+                    yield bone
+                except AttributeError:
+                    continue
+
     
     name :  StringProperty(
         name="Internal Name",
@@ -29,6 +32,7 @@ class Leap2BoneProperty(RegisterMixin, PropertyGroup):
         description="Should the settings be viewable?",
         default=True
     )
+
     handedness : EnumProperty(
         name="Hand",
         description="Which hand should it map to?",
@@ -57,7 +61,8 @@ class Leap2BoneProperty(RegisterMixin, PropertyGroup):
         name="Joint",
         description="Choose the joint to track. From the palm outward",
         soft_max=2,
-        soft_min=0
+        soft_min=0,
+        default=2
     )
 
     rot_pos : BoolVectorProperty(
@@ -66,11 +71,13 @@ class Leap2BoneProperty(RegisterMixin, PropertyGroup):
         size=2
 
     )
+
     scale_factor : FloatVectorProperty(
         name="Scale factor",
-        description="Scale movement vector by thexe scalars",
-        soft_min=0.01,
-        soft_max=10,
+        description="Scale movement vector by these scalars",
+        soft_min=0,
+        default=(1,1,1),
+        soft_max=5,
         subtype="XYZ",
         size=3
     )
@@ -78,4 +85,4 @@ class Leap2BoneProperty(RegisterMixin, PropertyGroup):
 
     @classmethod
     def _register_extra(cls):
-        bpy.types.Scene.Leap2BoneProperty = CollectionProperty(type=cls)
+        bpy.types.PoseBone.LeapProperties = bpy.props.PointerProperty(type=cls)

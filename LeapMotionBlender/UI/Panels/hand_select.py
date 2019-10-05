@@ -1,8 +1,7 @@
 import bpy
 from bpy.types import Panel
-from ..bone_select_PROP import BoneSelectProperty
-from ..leap_to_bone_PROP import Leap2BoneProperty
 from .leap_panel_base import LeapPanel
+from ...Properties import BoneSelectProperty, Leap2BoneProperty
 
 
 class HandSelect(LeapPanel):
@@ -15,18 +14,14 @@ class HandSelect(LeapPanel):
         layout = self.layout
         bone_select = bpy.context.scene.BoneSelectProperty
         
-        layout.prop(bone_select, "armature_select_enum")        
-        
-        if bone_select.armature_select_enum:
-            layout.prop(bone_select, "bone_group_enum")
 
-        if bone_select.bone_group_enum:
-            leap2bone = bpy.context.scene.Leap2BoneProperty        
-            col = layout.column()
-            pose = context.scene.objects[bone_select.armature_select_enum].pose
-            for col_prop in bpy.context.scene.Leap2BoneProperty:
-                row = col.row()
-                
-                row.label(text=col_prop.name.split(":")[-1])
-                row.prop(col_prop, "handedness")
-    
+        bone_generator = Leap2BoneProperty.get_bones_in_selected_group()
+        col = layout.column()
+        for pose_bone in bone_generator:
+            pb_leap_prop = pose_bone.LeapProperties
+            if pose_bone.bone_group.name != bone_select.bone_group_enum:
+                continue
+            row = col.row()
+
+            row.label(text=pose_bone.name)
+            row.prop(pb_leap_prop, "handedness")

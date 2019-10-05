@@ -3,11 +3,11 @@ from bpy.app.handlers import persistent
 from bpy.props import BoolProperty, EnumProperty, IntProperty, PointerProperty, StringProperty
 from bpy.types import AddonPreferences
 
-from .Operators import ForceStart
-from . import communicator 
+from ...Operators import ForceStart
+from ... import communicator 
 
 class SettingsPanel(AddonPreferences):
-    bl_idname = __package__
+    bl_idname = "LeapMotionBlender"
     
     auto_start : BoolProperty(
         name="Start automatically",
@@ -41,9 +41,11 @@ class SettingsPanel(AddonPreferences):
         col.prop(self, "host")
         col.prop(self, "port")
         col.separator()
-        col.prop(self, "bone_group_enum")
+
         col.prop(self, "auto_start")
+        
         if communicator.server_port != 0:
+            self.port = communicator.server_port
             col.label(text="Running at port: {}".format(communicator.server_port))
         
         if not communicator.wserver:
