@@ -15,6 +15,7 @@ class RecordProperties(RegisterMixin, PropertyGroup):
 
     def move_toggle(self, context):
         props = context.scene.RecordProperties
+        bpy.ops.pose.user_transforms_clear()
         if not bpy.app.timers.is_registered(move_bones) and props.move_bones:
             bpy.app.timers.register(move_bones, first_interval=1, persistent=False)
 
@@ -38,6 +39,7 @@ class RecordProperties(RegisterMixin, PropertyGroup):
         name="Icon used",
         default="VIEW_CAMERA"
     )
+    
     recording: BoolProperty(
         name="Record",
         description="Should new keyframes be inserted from the data acquired?",
