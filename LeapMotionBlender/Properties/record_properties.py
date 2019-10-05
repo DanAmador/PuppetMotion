@@ -4,6 +4,7 @@ from bpy.types import PropertyGroup
 from ..general_helpers import RegisterMixin
 from ..bone_mover import move_bones
 from ..communicator import message_queue as mq
+from .leap_bone_properties import Leap2BoneProperty
 class RecordProperties(RegisterMixin, PropertyGroup):
     def record_toggle(self, context):
         props = context.scene.RecordProperties

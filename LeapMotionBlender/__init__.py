@@ -40,7 +40,6 @@ classes = (SettingsPanel, ForceStart,
 def register():
     register_with_extras(classes)
     
-    # bpy.app.handlers.frame_change_pre.append(communicator.handle_messages)
 
     pref = bpy.context.preferences.addons[__package__].preferences
     

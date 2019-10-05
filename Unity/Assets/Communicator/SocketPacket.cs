@@ -32,15 +32,25 @@ namespace Communicator {
 
         [Serializable]
         public class Bone {
-            private Vector3 lastPos;
+            private Vector3 lastPos, currPos;
             public Quaternion Rotation;
             public Vector3 Position;
 
             public void UpdateBone(Transform bone) {
-                Vector3 middlePos = Position;
-                Rotation = bone.rotation ;
-                Position = bone.position - lastPos;
-                lastPos = middlePos;
+                lastPos = currPos;
+                currPos = bone.position;
+                Rotation = bone.rotation;
+                Position = ToBlenderCoordinate(currPos);
+            }
+
+            private Vector3 ToBlenderCoordinate(Vector3 vec) {
+                Vector3 copy = vec;
+
+                copy.x *= -1;
+                copy.z = vec.y;
+                copy.y = vec.z;
+
+                return copy;
             }
         }
 

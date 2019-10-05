@@ -21,7 +21,7 @@ def move_bones():
                     bone.rotation_quaternion = list(bone_action["Rotation"].values())
                 if leap.rot_pos[1]:
                     for indx,val in enumerate(bone_action["Position"].values()):
-                        bone.location[indx] += val
+                        bone.location[indx] = val *  leap.scale_factor[indx]
                     # translation = mathutils.Vector(tuple(bone_action["Position"].values()))
                     # print(translation)
 

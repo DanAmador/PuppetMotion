@@ -9,9 +9,7 @@ from ..general_helpers import RegisterMixin
 class Leap2BoneProperty(RegisterMixin, PropertyGroup):
     @staticmethod
     def get_bones_in_selected_group():
-
         bone_select = bpy.context.scene.BoneSelectProperty
-
         bones = bpy.context.scene.objects[bone_select.armature_select_enum].pose.bones
 
         if bone_select.bone_group_enum:
@@ -64,7 +62,8 @@ class Leap2BoneProperty(RegisterMixin, PropertyGroup):
         name="Joint",
         description="Choose the joint to track. From the palm outward",
         soft_max=2,
-        soft_min=0
+        soft_min=0,
+        default=2
     )
 
     rot_pos : BoolVectorProperty(
@@ -84,7 +83,21 @@ class Leap2BoneProperty(RegisterMixin, PropertyGroup):
         size=3
     )
 
+    start_pos : FloatVectorProperty(
+        name= "Start Position",
+        description="Start offset for the bone",
+        subtype = "XYZ",
+        default= (0,0,0),
+        size=3
+    )
 
+    start_rot: FloatVectorProperty(
+        name="Start Rotation",
+        description="Start rotation for the bone",
+        subtype="QUATERNION",
+        default= (0,0,0,0),
+        size=4
+    )
     @classmethod
     def _register_extra(cls):
         bpy.types.PoseBone.LeapProperties = bpy.props.PointerProperty(type=cls)

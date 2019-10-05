@@ -19,6 +19,7 @@ def start_server(host, port):
     global wserver
     if wserver:
         return (False, "The server is already running")
+        
     if is_port_open(host,port):
         return (False, "The port is not open")
     wserver = threading.Thread(target=server_thread_starter, args=(host,port,))
