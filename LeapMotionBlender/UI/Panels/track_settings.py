@@ -16,6 +16,7 @@ class TrackSettings(LeapPanel):
         
         bone_select = context.scene.BoneSelectProperty
         bones = Leap2BoneProperty.get_bones_in_selected_group()
+        
         for pose_bone in bones:
             pb_leap_prop = pose_bone.LeapProperties
             if pb_leap_prop.handedness == "None":
@@ -32,9 +33,14 @@ class TrackSettings(LeapPanel):
                 settings.prop(pb_leap_prop, "finger_select")
                 settings.prop(pb_leap_prop, "finger_joint")
                 bools = settings.row()
+
                 bools.prop(pb_leap_prop, "rot_pos", index=0, text="Rotation")
                 bools.prop(pb_leap_prop, "rot_pos", index=1, text="Position")
-                settings.prop(pb_leap_prop, "scale_factor")
+                
+                if pb_leap_prop.rot_pos[1]:
+                    scale_box = settings.box()
+                    scale_box.prop(pb_leap_prop, "scale_factor")
+
         if amount == 0:
             layout.label(text="No bones have hand settings!")
                 

@@ -1,8 +1,7 @@
 import bpy
-from bpy.props import (StringProperty, EnumProperty,
+from bpy.props import (StringProperty, EnumProperty, PointerProperty,
                         IntProperty, BoolVectorProperty, 
                         FloatVectorProperty, BoolProperty)
-from bpy.props import PointerProperty
 from bpy.types import PropertyGroup, Scene
 from ..general_helpers import RegisterMixin
 
@@ -76,29 +75,14 @@ class Leap2BoneProperty(RegisterMixin, PropertyGroup):
     scale_factor : FloatVectorProperty(
         name="Scale factor",
         description="Scale movement vector by these scalars",
-        soft_min=0.01,
+        soft_min=0,
         default=(1,1,1),
-        soft_max=10,
+        soft_max=5,
         subtype="XYZ",
         size=3
     )
 
-    start_pos : FloatVectorProperty(
-        name= "Start Position",
-        description="Start offset for the bone",
-        subtype = "XYZ",
-        default= (0,0,0),
-        size=3
-    )
 
-    start_rot: FloatVectorProperty(
-        name="Start Rotation",
-        description="Start rotation for the bone",
-        subtype="QUATERNION",
-        default= (0,0,0,0),
-        size=4
-    )
     @classmethod
     def _register_extra(cls):
         bpy.types.PoseBone.LeapProperties = bpy.props.PointerProperty(type=cls)
-        # bpy.types.Scene.Leap2BoneProperty = CollectionProperty(type=cls)

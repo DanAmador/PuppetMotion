@@ -39,11 +39,18 @@ namespace Communicator {
             public void UpdateBone(Transform bone) {
                 lastPos = currPos;
                 currPos = bone.position;
-                Rotation = bone.rotation;
-                Position = ToBlenderCoordinate(currPos);
+                Rotation = bone.rotation;//Quaternion.Euler(ToBlenderQuaternionCoordinate(bone.rotation.eulerAngles));
+                Position = ToBlenderVectorCoordinate(currPos);
             }
 
-            private Vector3 ToBlenderCoordinate(Vector3 vec) {
+            private Vector3 ToBlenderQuaternionCoordinate(Vector3 rotationEulerAngles) {
+                Vector3 copy = ToBlenderVectorCoordinate(rotationEulerAngles);
+
+//                copy.x *= -1;
+                return copy;
+            }
+
+            private Vector3 ToBlenderVectorCoordinate(Vector3 vec) {
                 Vector3 copy = vec;
 
                 copy.x *= -1;

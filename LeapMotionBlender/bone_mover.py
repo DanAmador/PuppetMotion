@@ -17,19 +17,11 @@ def move_bones():
                 bone_action = actions[leap.handedness][leap.finger_select]["bones"][leap.finger_joint]
                 if leap.rot_pos[0]:
                     bone.rotation_mode = "QUATERNION"
-                    # quat = mathutils.Quaternion(*tuple(bone_action["Rotation"]))
                     bone.rotation_quaternion = list(bone_action["Rotation"].values())
                 if leap.rot_pos[1]:
                     for indx,val in enumerate(bone_action["Position"].values()):
                         bone.location[indx] = val *  leap.scale_factor[indx]
-                    # translation = mathutils.Vector(tuple(bone_action["Position"].values()))
-                    # print(translation)
 
-                    # bone.translate(translation)
-                # if leap.rot_pos[1]:
-                #     print(bone_)
-                # if props.recording:
-                #     print("Bruh")
         except Exception as e:
             print(e)
 

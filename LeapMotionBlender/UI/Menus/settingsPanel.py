@@ -45,6 +45,7 @@ class SettingsPanel(AddonPreferences):
         col.prop(self, "auto_start")
         
         if communicator.server_port != 0:
+            self.port = communicator.server_port
             col.label(text="Running at port: {}".format(communicator.server_port))
         
         if not communicator.wserver:
