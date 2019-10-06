@@ -75,13 +75,20 @@ class Leap2BoneProperty(RegisterMixin, PropertyGroup):
     scale_factor : FloatVectorProperty(
         name="Scale factor",
         description="Scale movement vector by these scalars",
-        soft_min=0,
+        soft_min=-10,
         default=(1,1,1),
-        soft_max=5,
+        soft_max=10,
         subtype="XYZ",
         size=3
     )
 
+    rot_select  : BoolVectorProperty(
+        name="Rotation Axis",
+        description="Which axis should be used in the rotation?",
+        default=(True,True,True),
+        subtype="XYZ",
+        size=3
+    )
 
     @classmethod
     def _register_extra(cls):
