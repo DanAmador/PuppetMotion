@@ -17,7 +17,7 @@ class RecordMovement(RegisterMixin, Operator):
 
         props.recording = not props.recording
         props.move_bones = True
-
+        props.frame_counter = 0
         return {'FINISHED'}
 
     def invoke(self, context, event):

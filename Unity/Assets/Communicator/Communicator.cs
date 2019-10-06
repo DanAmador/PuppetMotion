@@ -26,7 +26,6 @@ namespace Communicator {
                 _sp.UpdateHands(leftHand, rightHand);
             
                 if(_socketComponent.isActiveAndEnabled){
-                    Debug.Log(_sp.ToJson());
                     _socketComponent.Send(_sp.ToJson());
                 }
 

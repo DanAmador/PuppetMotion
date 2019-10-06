@@ -75,7 +75,7 @@ class Leap2BoneProperty(RegisterMixin, PropertyGroup):
     scale_factor : FloatVectorProperty(
         name="Scale factor",
         description="Scale movement vector by these scalars",
-        soft_min=0,
+        soft_min=-5,
         default=(1,1,1),
         soft_max=5,
         subtype="XYZ",
@@ -89,7 +89,7 @@ class Leap2BoneProperty(RegisterMixin, PropertyGroup):
         subtype="XYZ",
         size=3
     )
-    
+
     @classmethod
     def _register_extra(cls):
         bpy.types.PoseBone.LeapProperties = bpy.props.PointerProperty(type=cls)

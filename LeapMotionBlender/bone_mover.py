@@ -32,24 +32,19 @@ def move_bones():
                     for indx,val in enumerate(bone_action["Position"].values()):
                         bone.location[indx] = val *  leap.scale_factor[indx]
 
-                if props.frame_counter % props.record_rate == 0 and props.recording:
-                    print(props.frame_counter + props.start_frame)
-                    if leap.rot_pos[1]:
-                        bone.keyframe_insert(data_path="location",frame=props.frame_counter + props.start_frame)
-                    if leap.rot_pos[0]:
-                        bone.keyframe_insert(data_path="rotation",frame=props.frame_counter + props.start_frame)
-        
-        except Exception as e:
-            print(e)
-        finally:
+
+                if props.recording:
+                    if props.frame_counter % props.record_rate == 0:
+                        if leap.rot_pos[1]:
+                            bone.keyframe_insert(data_path="location",frame=props.frame_counter + props.start_frame)
+                        if leap.rot_pos[0]:
+                            bone.keyframe_insert(data_path="rotation",frame=props.frame_counter + props.start_frame)
+            
             if props.recording:
                 props.frame_counter += 1
-                bpy.context.scene.frame_current += 1
-        
 
-
-
-    
+        except Exception as e:
+            print(e)    
     return 1/props.framerate
 
     
