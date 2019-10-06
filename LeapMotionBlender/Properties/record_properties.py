@@ -9,7 +9,7 @@ from .leap_bone_properties import Leap2BoneProperty
 
 class RecordProperties(RegisterMixin, PropertyGroup):
     def record_toggle(self, context):
-        clear_queue(    )
+        clear_queue()
         props = context.scene.RecordProperties
         new_verb = "Stop" if props.recording else "Start"
         props.icon = "CANCEL" if props.recording else "VIEW_CAMERA"
@@ -18,6 +18,7 @@ class RecordProperties(RegisterMixin, PropertyGroup):
         
 
     def move_toggle(self, context):
+        clear_queue()        
         props = context.scene.RecordProperties
         bpy.ops.pose.user_transforms_clear()
         if not bpy.app.timers.is_registered(move_bones) and props.move_bones:
@@ -58,7 +59,7 @@ class RecordProperties(RegisterMixin, PropertyGroup):
     )
 
     framerate : IntProperty(
-        name="Framerate",
+        name="Sample Rate",
         description="How many frames per second should be sampled while moving the bone?",
         default = 24,
         soft_max = 60,

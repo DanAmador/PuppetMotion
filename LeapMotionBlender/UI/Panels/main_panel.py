@@ -23,7 +23,5 @@ class MainLeapPanel(LeapPanel):
             frame_col = row.column()
             frame_col.prop(props, "framerate")
             frame_col.prop(props, "record_rate")
-            frame_col.prop(props, "frame_counter")
-            frame_col.prop(props, "start_frame")
             row.prop(props, "move_bones")
             col.operator(RecordMovement.bl_idname, text=props.button_text, icon=props.icon)

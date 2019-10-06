@@ -9,7 +9,6 @@ def move_bones():
     bones_in_group = Leap2BoneProperty.get_bones_in_selected_group()
     axes = ("X", "Y", "Z")
     while not mq.empty():
-        try:
             actions = mq.get()
             for bone in bones_in_group:
                 leap = bone.LeapProperties
@@ -32,7 +31,7 @@ def move_bones():
                     for indx,val in enumerate(bone_action["Position"].values()):
                         bone.location[indx] = val *  leap.scale_factor[indx]
 
-
+                
                 if props.recording:
                     if props.frame_counter % props.record_rate == 0:
                         if leap.rot_pos[1]:
@@ -42,9 +41,6 @@ def move_bones():
             
             if props.recording:
                 props.frame_counter += 1
-
-        except Exception as e:
-            print(e)    
     return 1/props.framerate
 
     

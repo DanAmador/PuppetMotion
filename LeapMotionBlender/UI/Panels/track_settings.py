@@ -27,8 +27,8 @@ class TrackSettings(LeapPanel):
             head = box.row()
             head.split(factor=0.1)
             head.prop(pb_leap_prop, "expanded", text="")
-            icon = "TRIA_RIGHT" if pb_leap_prop.handedness == "Right" else "TRIA_LEFT"
-            head.label(text=pose_bone.name, icon=icon)
+            head.label(text=pose_bone.name)
+            head.prop(pb_leap_prop, "handedness", text="")
             if pb_leap_prop.expanded:
                 settings = box.box()
                 settings.prop(pb_leap_prop, "finger_select")
