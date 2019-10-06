@@ -1,4 +1,5 @@
 # Leap Motion Bone Poser
+
 ### This repo consists of a client and server used to  help me animate a character programatically, it can also be adapted and extended to animate any rig in real time. 
 
 # Requisites
@@ -7,7 +8,6 @@
 
 # Demo
 ![](./demo/one.gif)
-
 # Record 
 ### Record keyframes to quickly create layered animations
 ![](./demo/two.gif)

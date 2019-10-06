@@ -29,8 +29,10 @@ def start_server(host, port):
     server_port = port
     return (True, "Server started at port: {}".format(port))
 
-
-
+def clear_queue():
+    global message_queue
+    with message_queue.mutex:
+        message_queue.queue.clear()
 
 def force_start(host, port):
     newport = port if is_port_open(host,port) else get_open_port()
