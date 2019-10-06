@@ -82,7 +82,14 @@ class Leap2BoneProperty(RegisterMixin, PropertyGroup):
         size=3
     )
 
-
+    rot_select  : BoolVectorProperty(
+        name="Rotation Axis",
+        description="Which axis should be used in the rotation?",
+        default=(True,True,True),
+        subtype="XYZ",
+        size=3
+    )
+    
     @classmethod
     def _register_extra(cls):
         bpy.types.PoseBone.LeapProperties = bpy.props.PointerProperty(type=cls)

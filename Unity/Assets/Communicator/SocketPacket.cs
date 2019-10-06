@@ -33,13 +33,13 @@ namespace Communicator {
         [Serializable]
         public class Bone {
             private Vector3 lastPos, currPos;
-            public Quaternion Rotation;
+            public Vector3 Rotation;
             public Vector3 Position;
 
             public void UpdateBone(Transform bone) {
                 lastPos = currPos;
                 currPos = bone.position;
-                Rotation = bone.rotation;//Quaternion.Euler(ToBlenderQuaternionCoordinate(bone.rotation.eulerAngles));
+                Rotation = ToBlenderQuaternionCoordinate(bone.rotation.eulerAngles);
                 Position = ToBlenderVectorCoordinate(currPos);
             }
 

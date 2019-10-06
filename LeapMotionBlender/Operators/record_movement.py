@@ -13,12 +13,12 @@ class RecordMovement(RegisterMixin, Operator):
     bl_label = "Start Recording"
 
     def execute(self, context):
-        return {'FINISHED'}
-
-    def invoke(self, context, event):
         props= context.scene.RecordProperties
 
         props.recording = not props.recording
         props.move_bones = True
 
+        return {'FINISHED'}
+
+    def invoke(self, context, event):
         return self.execute(context)
