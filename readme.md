@@ -13,4 +13,4 @@
 ![](./demo/two.gif)
 
 # Rendered Result
-![](./demo/Render.gif)
+![](./demo/render.gif)
