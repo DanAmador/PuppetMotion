@@ -21,7 +21,11 @@ class HandSelect(LeapPanel):
             pb_leap_prop = pose_bone.LeapProperties
             if pose_bone.bone_group.name != bone_select.bone_group_enum:
                 continue
-            row = col.row()
+            row = col.box()
 
             row.label(text=pose_bone.name)
-            row.prop(pb_leap_prop, "handedness")
+            col1 = row.row()
+            col1.prop(pb_leap_prop, "handedness", text="")
+
+            if pb_leap_prop.handedness != "None":
+                col1.prop(pb_leap_prop, "track_type", text="")

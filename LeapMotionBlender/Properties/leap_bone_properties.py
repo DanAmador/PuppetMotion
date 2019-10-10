@@ -33,6 +33,16 @@ class Leap2BoneProperty(RegisterMixin, PropertyGroup):
         default=True
     )
 
+    track_type : EnumProperty(
+        name="Type",
+        description="Type of tracking to be used, either track an entire hand or single bone",
+        items=[
+            ("Hand", "Hand", "", "VIEW_PAN",0),
+            ("Bone", "Bone", "", "BONE_DATA",1),
+        ],
+        default = "Bone"
+    )
+    
     handedness : EnumProperty(
         name="Hand",
         description="Which hand should it map to?",

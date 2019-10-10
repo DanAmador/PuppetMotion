@@ -31,10 +31,12 @@ class TrackSettings(LeapPanel):
             head.prop(pb_leap_prop, "handedness", text="")
             if pb_leap_prop.expanded:
                 settings = box.box()
-                settings.prop(pb_leap_prop, "finger_select")
-                settings.prop(pb_leap_prop, "finger_joint")
+                if pb_leap_prop.track_type == "Bone":
+                    settings.prop(pb_leap_prop, "finger_select")
+                    settings.prop(pb_leap_prop, "finger_joint")
+                
                 bools = settings.row()
-
+    
                 bools.prop(pb_leap_prop, "rot_pos", index=0, text="Rotation")
                 bools.prop(pb_leap_prop, "rot_pos", index=1, text="Position")
                 

@@ -15,11 +15,11 @@ namespace Communicator {
 
         public void UpdateHands(RigidHand leftRH, RigidHand rightRH) {
             if (leftRH.IsTracked) {
-                Left.UpdateHand(leftRH.fingers);
+                Left.UpdateHand(leftRH);
             }
 
             if (rightRH.IsTracked) {
-                Right.UpdateHand(rightRH.fingers);
+                Right.UpdateHand(rightRH);
             }
         }
 
@@ -46,14 +46,16 @@ namespace Communicator {
             private Vector3 ToBlenderQuaternionCoordinate(Vector3 rotationEulerAngles) {
                 Vector3 copy = ToBlenderVectorCoordinate(rotationEulerAngles);
 
-//                copy.x *= -1;
+                copy.x *= Mathf.Deg2Rad;
+                copy.y *= Mathf.Deg2Rad;
+                copy.z *= Mathf.Deg2Rad;
                 return copy;
             }
 
             private Vector3 ToBlenderVectorCoordinate(Vector3 vec) {
                 Vector3 copy = vec;
 
-                copy.x *= -1;
+                //copy.x *= -1;
                 copy.z = vec.y;
                 copy.y = vec.z;
 
@@ -89,6 +91,7 @@ namespace Communicator {
         [Serializable]
         public class Hand {
             public Finger Thumb, Index, Middle, Pinky, Ring;
+            public Bone Palm;
 
             public Hand() {
                 Thumb = new Finger();
@@ -96,10 +99,16 @@ namespace Communicator {
                 Middle = new Finger();
                 Ring = new Finger();
                 Pinky = new Finger();
+                Palm = new Bone();
             }
 
 
-            public void UpdateHand(FingerModel thumb, FingerModel index, FingerModel middle, FingerModel pinky,
+            public void UpdateHand(RigidHand hand) {
+                UpdateHand(hand.fingers);
+                Palm.UpdateBone(hand.palm);
+            }
+
+            private void UpdateFingers(FingerModel thumb, FingerModel index, FingerModel middle, FingerModel pinky,
                 FingerModel ring) {
                 Thumb.UpdateFinger(thumb);
                 Index.UpdateFinger(index);
@@ -108,10 +117,9 @@ namespace Communicator {
                 Pinky.UpdateFinger(pinky);
             }
 
-
-            public void UpdateHand(FingerModel[] RhFingers) {
+            private void UpdateHand(FingerModel[] RhFingers) {
                 try {
-                    UpdateHand(RhFingers[0],
+                    UpdateFingers(RhFingers[0],
                         RhFingers[1],
                         RhFingers[2],
                         RhFingers[3],
