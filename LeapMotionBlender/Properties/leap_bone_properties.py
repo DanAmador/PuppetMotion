@@ -5,22 +5,30 @@ from bpy.props import (StringProperty, EnumProperty, PointerProperty,
 from bpy.types import PropertyGroup, Scene
 from ..general_helpers import RegisterMixin
 
+
+axis = [
+            ("X", "X","", "EMPTY_AXIS", 0),
+            ("Y", "Y","", "EMPTY_AXIS", 1),
+            ("Z", "Z","", "EMPTY_AXIS", 2),
+    ]
+    
 class Leap2BoneProperty(RegisterMixin, PropertyGroup):
     @staticmethod
     def get_bones_in_selected_group():
         bone_select = bpy.context.scene.BoneSelectProperty
-        bones = bpy.context.scene.objects[bone_select.armature_select_enum].pose.bones
+        if bone_select.armature_select_enum:
+            bones = bpy.context.scene.objects[bone_select.armature_select_enum].pose.bones
 
-        if bone_select.bone_group_enum:
-            for bone in bones:
-                try:
-                    if bone.bone_group.name != bone_select.bone_group_enum:
+            if bone_select.bone_group_enum:
+                for bone in bones:
+                    try:
+                        if bone.bone_group.name != bone_select.bone_group_enum:
+                            continue
+                        yield bone
+                    except AttributeError:
                         continue
-                    yield bone
-                except AttributeError:
-                    continue
 
-    
+
     name :  StringProperty(
         name="Internal Name",
         description= " Property id made out of armature:bone_group:bone_name",
@@ -98,6 +106,40 @@ class Leap2BoneProperty(RegisterMixin, PropertyGroup):
         default=(True,True,True),
         subtype="XYZ",
         size=3
+    )
+
+    axis_mapper : BoolProperty(
+        name= "Map Axis",
+        description="Should the mapper be viewable?",
+        default=True
+    )
+
+
+    map_X : EnumProperty(
+        name="X",
+        description="Map a Unity vector to this vector",
+        items = axis,
+        default = "X"
+    )
+    
+    # map_Z : EnumProperty(
+    #     name="Z",
+    #     description="Map a Unity vector to this vector",
+    #     items = axis,
+    #     default = "Z"
+    # )
+    map_Y : EnumProperty(
+        name="Y",
+        description="Map a Unity vector to this vector",
+        items = axis,
+        default = "Y"
+    )
+
+    map_Z : EnumProperty(
+        name="Z",
+        description="Map a Unity vector to this vector",
+        items = axis,
+        default = "Z"
     )
 
     @classmethod

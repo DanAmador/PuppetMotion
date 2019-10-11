@@ -13,6 +13,8 @@ async def websocket_server(websocket, path):
         print("Disconnect")
     except JsonDecodeError:
         print("error loading json")
+    except Exception as e:
+        print(e)
 
 
 def server_thread_starter( host, port):

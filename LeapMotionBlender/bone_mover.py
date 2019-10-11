@@ -23,9 +23,11 @@ def move_track_bone(bone_action, bone, leapProp = None, offset = (0,0,0)):
     
     #Apply Translation
     if leap.rot_pos[1]:
-        scale = leap.scale_factor if leapProp is None else (2,1,1)
-        for indx,val in enumerate(bone_action["Position"].values()):
-            bone.location[indx] = offset[indx] + val *  scale[indx]
+        scale = leap.scale_factor if leapProp is None else (1,1,1)
+        values = list(bone_action["Position"].values())
+        for indx,axis in enumerate(axes):
+            mapped_axis = getattr(leap, f"map_{axis}")
+            bone.location[indx] = offset[indx] + values[axes.index(mapped_axis)] *  scale[indx]
 
 
 def move_track_hand(actions, bone):
@@ -49,7 +51,6 @@ def move_track_hand(actions, bone):
 
 
         except ValueError:
-            print(finger.basename)
             # Bone IK isn't named using the {finger}_ik structure so it's skipped
             continue
 
@@ -83,5 +84,6 @@ def move_bones():
             
             if props.recording:
                 props.frame_counter += 1
+                
     return 1/props.framerate
 

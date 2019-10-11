@@ -35,25 +35,29 @@ namespace Communicator {
             public Vector3 Rotation;
             public Vector3 Position;
 
-            public void UpdateBone(Transform bone, bool local = true) {
+            public void UpdateBone(Transform bone, bool local = false) {
                 Rotation = ToBlenderQuaternionCoordinate(bone, local);
                 Position = ToBlenderVectorCoordinate(bone, local);
             }
 
             private Vector3 ToBlenderQuaternionCoordinate(Transform bone, bool local) {
-                Vector3 copy = local ? bone.localEulerAngles : bone.eulerAngles; //ToBlenderVectorCoordinate(rotationEulerAngles); // ToBlenderVectorCoordinate(rotationEulerAngles);
+                Vector3
+                    copy = local
+                        ? bone.localEulerAngles
+                        : bone.eulerAngles; //ToBlenderVectorCoordinate(rotationEulerAngles); // ToBlenderVectorCoordinate(rotationEulerAngles);
                 copy.x = (copy.x + 180) * Mathf.Deg2Rad;
-                copy.y = (copy.z + 180 ) * -Mathf.Deg2Rad;
+                copy.y = (copy.z + 180) * -Mathf.Deg2Rad;
                 copy.z = (copy.y + 180) * Mathf.Deg2Rad;
                 return copy;
             }
 
             private Vector3 ToBlenderVectorCoordinate(Transform bone, bool local) {
-                Vector3 copy = local ? bone.localPosition : bone.position;
-                
+                Vector3 vec = local ? bone.localPosition : bone.position;
+                Vector3 copy = vec;
+
                 copy.x *= -1;
-//                copy.z = vec.y;
-//                copy.y = -vec.z;
+                copy.z = -vec.y;
+                copy.y = -vec.z;
 
                 return copy;
             }
@@ -101,7 +105,7 @@ namespace Communicator {
 
             public void UpdateHand(RigidHand hand) {
                 UpdateHand(hand.fingers);
-  
+
                 Palm.UpdateBone(hand.palm, false);
             }
 

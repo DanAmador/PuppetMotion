@@ -50,6 +50,12 @@ class TrackSettings(LeapPanel):
                     scale_box = settings.box()
                     scale_box.prop(pb_leap_prop, "scale_factor")
 
+                settings.prop(pb_leap_prop, "axis_mapper", text="Axis Mapper")
+                
+                if pb_leap_prop.axis_mapper:
+                    mapper_box = settings.box()
+                    for idx, ax in enumerate(axes):
+                        mapper_box.prop(pb_leap_prop, f"map_{ax}", index = idx, text=ax)
 
         if amount == 0:
             layout.label(text="No bones have hand settings!")

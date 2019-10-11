@@ -15,6 +15,7 @@ class RecordProperties(RegisterMixin, PropertyGroup):
         props.icon = "CANCEL" if props.recording else "VIEW_CAMERA"
         props.start_frame = context.scene.frame_current if props.recording else 0
         props.button_text  = f"{new_verb} Recording"
+        bpy.ops.screen.animation_play()
         
 
     def move_toggle(self, context):
@@ -71,7 +72,7 @@ class RecordProperties(RegisterMixin, PropertyGroup):
         description="How many movement samples must be taken before inserting a keyframe?",
         default = 12,
         soft_max = 60,
-        soft_min = 12
+        soft_min = 1
     )
 
     frame_counter : IntProperty(
