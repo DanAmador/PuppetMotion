@@ -7,10 +7,10 @@ from math import radians
 
 axes = ("X", "Y", "Z")
 finger_names = ("Thumb", "Index", "Middle", "Ring", "Pinky")
-def move_track_bone(bone_action, bone, leapProp = None):
-    leap = bone.LeapProperties if leapProp is None else leapProp
+def move_track_bone(bone_action, bone, leapProp = None, offset = (0,0,0)):
+    leap = bone.LeapProperties if leapProp is None else leapProp 
     #Apply Rotation
-    if leap.rot_pos[0]:
+    if leap.rot_pos[0] and not leapProp:
         bone.rotation_mode = "XYZ"
         rot_list = []
         
@@ -22,22 +22,37 @@ def move_track_bone(bone_action, bone, leapProp = None):
         bone.rotation_euler = rot_list
     
     #Apply Translation
-    if leap.rot_pos[1] and leapProp is not None:
+    if leap.rot_pos[1]:
+        scale = leap.scale_factor if leapProp is None else (2,1,1)
         for indx,val in enumerate(bone_action["Position"].values()):
-            bone.location[indx] = val *  leap.scale_factor[indx]
+            bone.location[indx] = offset[indx] + val *  scale[indx]
 
 
 def move_track_hand(actions, bone):
     leap = bone.LeapProperties
-
-    for finger in bone.children_recursive:
-        (fin    ger_name, _ , joint_num) = finger.name.split(".")        
-        joint_num = int(joint_num)
-        bone_action = actions[leap.handedness][finger_name]["bones"][int(joint_num)]
-        move_track_bone(bone_action, finger, leapProp=leap)
     
     palm_action = actions[leap.handedness]["Palm"]
     move_track_bone(palm_action, bone)
+
+    for finger in bone.children_recursive:
+        try:
+            # (finger_name, _,joint_num ) = finger.name.split(".")        
+            # joint_num = int(joint_num)
+
+            # bone_action = actions[leap.handedness][finger_name]["bones"][joint_num]
+            # move_track_bone(bone_action, finger, leapProp=leap)
+            
+            (finger_name, ik) = finger.basename.split("_")
+            
+            bone_action = actions[leap.handedness][finger_name]["bones"][2]
+            move_track_bone(bone_action, finger, leapProp=leap)
+
+
+        except ValueError:
+            print(finger.basename)
+            # Bone IK isn't named using the {finger}_ik structure so it's skipped
+            continue
+
             
 def move_bones():
     props = bpy.context.scene.RecordProperties

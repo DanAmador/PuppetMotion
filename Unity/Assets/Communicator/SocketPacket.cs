@@ -32,32 +32,28 @@ namespace Communicator {
 
         [Serializable]
         public class Bone {
-            private Vector3 lastPos, currPos;
             public Vector3 Rotation;
             public Vector3 Position;
 
-            public void UpdateBone(Transform bone) {
-                lastPos = currPos;
-                currPos = bone.position;
-                Rotation = ToBlenderQuaternionCoordinate(bone.rotation.eulerAngles);
-                Position = ToBlenderVectorCoordinate(currPos);
+            public void UpdateBone(Transform bone, bool local = true) {
+                Rotation = ToBlenderQuaternionCoordinate(bone, local);
+                Position = ToBlenderVectorCoordinate(bone, local);
             }
 
-            private Vector3 ToBlenderQuaternionCoordinate(Vector3 rotationEulerAngles) {
-                Vector3 copy = ToBlenderVectorCoordinate(rotationEulerAngles);
-
-                copy.x *= Mathf.Deg2Rad;
-                copy.y *= Mathf.Deg2Rad;
-                copy.z *= Mathf.Deg2Rad;
+            private Vector3 ToBlenderQuaternionCoordinate(Transform bone, bool local) {
+                Vector3 copy = local ? bone.localEulerAngles : bone.eulerAngles; //ToBlenderVectorCoordinate(rotationEulerAngles); // ToBlenderVectorCoordinate(rotationEulerAngles);
+                copy.x = (copy.x + 180) * Mathf.Deg2Rad;
+                copy.y = (copy.z + 180 ) * -Mathf.Deg2Rad;
+                copy.z = (copy.y + 180) * Mathf.Deg2Rad;
                 return copy;
             }
 
-            private Vector3 ToBlenderVectorCoordinate(Vector3 vec) {
-                Vector3 copy = vec;
-
-                //copy.x *= -1;
-                copy.z = vec.y;
-                copy.y = vec.z;
+            private Vector3 ToBlenderVectorCoordinate(Transform bone, bool local) {
+                Vector3 copy = local ? bone.localPosition : bone.position;
+                
+                copy.x *= -1;
+//                copy.z = vec.y;
+//                copy.y = -vec.z;
 
                 return copy;
             }
@@ -105,7 +101,8 @@ namespace Communicator {
 
             public void UpdateHand(RigidHand hand) {
                 UpdateHand(hand.fingers);
-                Palm.UpdateBone(hand.palm);
+  
+                Palm.UpdateBone(hand.palm, false);
             }
 
             private void UpdateFingers(FingerModel thumb, FingerModel index, FingerModel middle, FingerModel pinky,
