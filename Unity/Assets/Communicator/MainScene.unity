@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028377, g: 0.22571409, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2536,37 +2536,37 @@ PrefabInstance:
     - target: {fileID: 931749421747520416, guid: c788ffa811095b54fbcaee1c9b14205f,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 23.899963
+      value: -22
       objectReference: {fileID: 0}
     - target: {fileID: 931749421747520416, guid: c788ffa811095b54fbcaee1c9b14205f,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: -0.1
+      value: 799.9
       objectReference: {fileID: 0}
     - target: {fileID: 931749421747520416, guid: c788ffa811095b54fbcaee1c9b14205f,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 47.7
+      value: 47.700012
       objectReference: {fileID: 0}
     - target: {fileID: 931749421747520416, guid: c788ffa811095b54fbcaee1c9b14205f,
         type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 931749421747520416, guid: c788ffa811095b54fbcaee1c9b14205f,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 931749421747520416, guid: c788ffa811095b54fbcaee1c9b14205f,
-        type: 3}
-      propertyPath: m_AnchorMax.x
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 931749421747520416, guid: c788ffa811095b54fbcaee1c9b14205f,
         type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 931749421747520416, guid: c788ffa811095b54fbcaee1c9b14205f,
+        type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 931749421747520416, guid: c788ffa811095b54fbcaee1c9b14205f,
         type: 3}
